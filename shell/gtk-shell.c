@@ -152,8 +152,10 @@ draw_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 {
 	struct desktop *desktop = data;
 
-	gdk_cairo_set_source_pixbuf (cr, desktop->background->pixbuf, 0, 0);
-	cairo_paint (cr);
+	if (desktop->background->pixbuf) {
+		gdk_cairo_set_source_pixbuf (cr, desktop->background->pixbuf, 0, 0);
+		cairo_paint (cr);
+	}
 
 	return TRUE;
 }
@@ -178,7 +180,6 @@ background_create(struct desktop *desktop)
 	background->pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
 	if (!background->pixbuf) {
 		g_message ("Could not load background.");
-		exit (EXIT_FAILURE);
 	}
 
 	background->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
